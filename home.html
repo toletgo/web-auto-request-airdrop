@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            flex: 1;
+            background-color: #ffffff;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px;
+            flex-shrink: 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .highlight {
+            color: #f7c843;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info .username {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn-recharge {
+            background-color: #f7c843;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .sidebar-content .section {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-content h3 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .sidebar-content ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar-content ul li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        .sidebar-content ul li span {
+            background-color: #f7c843;
+            color: #000;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+
+        main {
+            padding: 20px;
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            flex: 1;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        header nav ul li {
+            margin: 0 10px;
+        }
+
+        header nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .user-info-main {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .user-info-main p {
+            margin: 10px 0;
+        }
+
+        .not-verified {
+            color: red;
+        }
+
+        .verify-email {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        .warning {
+            color: red;
+            font-weight: bold;
+        }
+
+        .notification {
+            background-color: #cce5ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-item {
+            background-color: #e2e3e5;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: green;
+        }
+
+        .stat-item:nth-child(2) .stat-value {
+            color: orange;
+        }
+
+        .stat-item:nth-child(3) .stat-value {
+            color: red;
+        }
+
+        .table-container h2 {
+            color: #f7c843;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            color: #ffffff;
+            background-color: #000000;
+        }
+
+        thead {
+            background-color: #333333;
+        }
+
+        thead th {
+            padding: 10px;
+            color: #ffffff;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #2b2b2b;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #1a1a1a;
+        }
+
+        tbody td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination .prev, .pagination .next, .pagination .page-number {
+            padding: 10px;
+            background-color: #f7c843;
+            color: #000000;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .contact-button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .quest {
+            background-color: #ffeb3b;
+            cursor: pointer;
+        }
+
+        .quest.inactive {
+            background-color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Go<span class="highlight">seeding</span></h2>
+            <div class="user-info">
+                <p class="username">coderbietyeu123</p>
+                <button class="btn-recharge">Nạp ngay</button>
+                <p>0 đ</p>
+            </div>
+        </div>
+        <hr>
+        <div class="sidebar-content">
+            <div class="section">
+                <h3>DỊCH VỤ TIKTOK</h3>
+                <ul>
+                    <li>Tăng mắt LiveStream <span>20 đ</span></li>
+                    <li>Tăng Like Tiktok <span>85 đ</span></li>
+                    <li>Tăng Follow Tiktok <span>30 đ</span></li>
+                    <li>Tăng View Tiktok <span>2 đ</span></li>
+                    <li>Tăng Share Tiktok <span>10 đ</span></li>
+                    <li>Comment Tiktok <span>800 đ</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>FACEBOOK</h3>
+                <ul>
+                    <li>Like bài viết ưu đãi <span>99K/năm</span></li>
+                    <li>Like bài viết, Like Cmt <span>95 đ</span></li>
+                    <li>Share bài viết <span>300 đ</span></li>
+                    <li>Comment Page, Group <span>800 đ</span></li>
+                    <li>Comment bài Cá nhân <span>500 đ</span></li>
+                    <li>Gói like tháng</li>
+                    <li>Tăng mắt Livestream <span>15 đ</span></li>
+                    <li>Tăng Views Video FB <span>50 đ</span></li>
+                    <li>Like Fanpage <span>120 đ</span></li>
+                    <li>Tăng member Group <span>30 đ</span></li>
+                    <li>Tăng Sub / Follows <span>Bảo trì</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>FACEBOOK REEL</h3>
+                <ul>
+                    <li>Like Reel <span>22 đ</span></li>
+                    <li>Comment Reel <span>700 đ</span></li>
+                    <li>View Reel <span>36 đ</span></li>
+                    <li>Share Reel <span>400 đ</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>DỊCH VỤ TWITTER / TELEGRAM</h3>
+                <ul>
+                    <li>Follow Twitter <span>65 đ</span></li>
+                    <li>Like Twitter <span>90 đ</span></li>
+                    <li>Comment Twitter <span>840 đ</span></li>
+                    <li>ReTweet Twitter <span>700 đ</span></li>
+                    <li>View Twitter <span>2 đ</span></li>
+                    <li>Member Telegram <span>0 đ</span></li>
+                    <li>Like Telegram <span>30 đ</span></li>
+                    <li>View Telegram <span>2 đ</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>DỊCH VỤ YOUTUBE</h3>
+                <ul>
+                    <li>Tăng Like Youtube <span>70 đ</span></li>
+                    <li>Tăng Like Youtube Short <span>60 đ</span></li>
+                    <li>Tăng view Youtube <span>35 đ</span></li>
+                    <li>View Youtube 4000 giờ <span>700 đ</span></li>
+                    <li>View Youtube Short <span>70 đ</span></li>
+                    <li>Comment <span>900 đ</span></li>
+                    <li>Like Comment <span>60 đ</span></li>
+                    <li>Subscriber Youtube <span>569 đ</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>INSTAGRAM / THREADS</h3>
+                <ul>
+                    <li>Tăng follow Threads <span>120 đ</span></li>
+                    <li>Tăng like Instagram <span>15 đ</span></li>
+                    <li>Comment Instagram <span>500 đ</span></li>
+                    <li>Tăng follow Instagram <span>75 đ</span></li>
+                    <li>Tăng view Instagram <span>4 đ</span></li>
+                </ul>
+            </div>
+            <hr>
+            <div class="section">
+                <h3>DỊCH VỤ SHOPEE / LAZADA</h3>
+                <ul>
+                    <li>Tăng Follow Lazada <span>190 đ</span></li>
+                    <li>Tăng Follow Shopee <span>200 đ</span></li>
+                    <li>Like sản phẩm Shopee <span>10 đ</span></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+    <main id="main-content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#">Nap tiền</a></li>
+                    <li><a href="#">Nhận thưởng</a></li>
+                    <li><a href="#">Lịch sử GD</a></li>
+                    <li><a href="#" class="username">coderbietyeu123</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="user-info-main">
+            <p>Email: laihuy161@gmail.com <span class="not-verified">Chưa xác thực</span></p>
+            <a href="#" class="verify-email">Xác thực Email => Tại đây</a>
+            <p>Nhận <strong>20.000 đ miễn phí</strong> để sử dụng dịch vụ => <a href="#">Tại đây</a></p>
+            <p class="warning">Nghiêm cấm sử dụng hệ thống cho những bài đăng có chủ đề liên quan đến tôn giáo - chính trị hoặc vi phạm thuần phong mỹ tục của Việt Nam. Nếu chúng tôi phát hiện được sẽ khóa tài khoản vĩnh viễn.</p>
+        </div>
+
+        <div class="table-container">
+            <h2>Team members</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Address</th>
+                    <th>Rank</th>
+                    <th>Total F1</th>
+                    <th>Members</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>0xfc...61bd</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>0xed...ccc0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>0xc7...21d6</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>0x0d...6520</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>0x95...f34d</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>0x72...8ca0</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>120</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="notification">
+            <p><strong>Thông báo:</strong> Hệ thống đã sửa xong lỗi của gói 99K. Tất cả khách hàng sẽ được bù thêm 4 ngày sử dụng.</p>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <p>Số dư hiện tại</p>
+                <p class="stat-value">0 đ</p>
+            </div>
+            <div class="stat-item">
+                <p>Profit</p>
+                <p class="stat-value">0 đ</p>
+            </div>
+            <div class="stat-item">
+                <p>Affiliate</p>
+                <p class="stat-value">0 đ</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h2>BẢNG QUEST</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>QUEST</th>
+                    <th>Status</th>
+                    <th>PROFIT</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="quest1" class="quest" onclick="selectQuest('quest1')">
+                    <td>Quest 1</td>
+                    <td class="status">Ready</td>
+                    <td>-</td>
+                </tr>
+                <tr id="quest2" class="quest" onclick="selectQuest('quest2')">
+                    <td>Quest 2</td>
+                    <td class="status">Ready</td>
+                    <td>-</td>
+                </tr>
+                <tr id="quest3" class="quest" onclick="selectQuest('quest3')">
+                    <td>Quest 3</td>
+                    <td class="status">Ready</td>
+                    <td>-</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<br>
+<br>
+<br>
+
+<button class="contact-button">Liên Hệ</button>
+<script>
+
+
+    function selectQuest(questId) {
+        var questRow = document.getElementById(questId);
+        questRow.classList.add('inactive');
+        questRow.querySelector('.status').innerText = 'waiting 30 days';
+    }
+</script>
+
+</body>
+</html>

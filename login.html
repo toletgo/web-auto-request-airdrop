@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoSeeding.vn</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
+    .welcome-message {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+    .login-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+    .login-box h1 {
+      background-color: #ff8800;
+      color: white;
+      margin: -30px -30px 30px -30px;
+      padding: 20px;
+      border-radius: 8px 8px 0 0;
+      font-size: 24px;
+    }
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
+      width: calc(100% - 20px);
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .login-box input[type="submit"],
+    .login-box .google-login {
+      width: 48%;
+      padding: 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 1%;
+      font-size: 16px;
+    }
+    .login-box .login {
+      background-color: #00c853;
+      color: white;
+    }
+    .login-box .register {
+      background-color: #d32f2f;
+      color: white;
+    }
+    .login-box .google-login {
+      background-color: #4285F4;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box .forgot-password,
+    .login-box .register-link {
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #ff5722;
+      font-size: 14px;
+    }
+    .google-icon {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="welcome-message">
+    Chào mừng bạn đến với GoSeeding.vn - TOP 1 Hệ thống Seeding Marketing mạng xã hội
+  </div>
+  <div class="login-box">
+    <h1>GOSEEDING.VN</h1>
+    <form>
+      <input type="text" placeholder="Tên tài khoản">
+      <input type="password" placeholder="Mật khẩu">
+      <div>
+        <input type="submit" value="Đăng nhập" class="login">
+        <a href="/oauth2/authorization/google" class="google-login">
+          <img src="https://img.icons8.com/color/16/000000/google-logo.png" class="google-icon"/>
+          Đăng nhập bằng Google
+        </a>
+      </div>
+      <div>
+        <input type="submit" value="Đăng ký" class="register">
+      </div>
+      <a href="#" class="forgot-password">Quên mật khẩu?</a>
+      <a href="#" class="register-link">Bạn chưa có tài khoản? Đăng ký</a>
+    </form>
+  </div>
+</div>
+</body>
+</html>
